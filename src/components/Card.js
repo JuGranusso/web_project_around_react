@@ -1,9 +1,9 @@
 import likeIcon from "../images/like.svg";
 import thrashIcon from "../images/like.svg";
 
-function Card({ photoUrl, name }) {
+function Card({ photoUrl, name, onClick }) {
   return (
-    <div class="photo-grid__card">
+    <div class="photo-grid__card" onClick={onClick}>
       <img
         class="photo-grid__delete"
         src={thrashIcon}

@@ -7,6 +7,7 @@ import editButtonIcon from "../images/editbutton.svg";
 import addButtonIcon from "../images/buttonadd.svg";
 import { api } from "../utils/api";
 import Card from "./Card";
+import ImagePopup from "./ImagePopup";
 
 function Main() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -16,6 +17,7 @@ function Main() {
   const [userDescription, setUserDescription] = useState("Explorador");
   const [userAvatar, setUserAvatar] = useState(custeauPhoto);
   const [cards, setCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -27,6 +29,13 @@ function Main() {
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
+  };
+
+  const closeAllPopups = () => {
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setSelectedCard(null);
   };
 
   useEffect(() => {
@@ -72,14 +81,19 @@ function Main() {
       </section>
 
       <section className="photo-grid">
-        {cards.map(({ name, photoUrl }) => (
-          <Card key={name} name={name} photoUrl={photoUrl} />
+        {cards.map((card) => (
+          <Card
+            key={card.name}
+            name={card.name}
+            photoUrl={card.photoUrl}
+            onClick={() => setSelectedCard(card)}
+          />
         ))}
       </section>
-
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       <PopupWithForm
         isOpen={isEditProfilePopupOpen}
-        onClose={() => setIsEditProfilePopupOpen(false)}
+        onClose={closeAllPopups}
         name="profile-form"
         title="Editar Perfil"
         submitLabel="Salvar"
@@ -110,7 +124,7 @@ function Main() {
       </PopupWithForm>
       <PopupWithForm
         isOpen={isAddPlacePopupOpen}
-        onClose={() => setIsAddPlacePopupOpen(false)}
+        onClose={closeAllPopups}
         name="card-form"
         title="Novo Local"
         submitLabel="Criar"
@@ -144,7 +158,7 @@ function Main() {
       />
       <PopupWithForm
         isOpen={isEditAvatarPopupOpen}
-        onClose={() => setIsEditAvatarPopupOpen(false)}
+        onClose={closeAllPopups}
         name="avatar-form"
         title="Alterar foto do perfil"
         submitLabel="Salvar"
