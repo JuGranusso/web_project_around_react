@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/web_project_around_react/static/css/main.c7bb3081.css",
-    "main.js": "/web_project_around_react/static/js/main.56d2cf2e.js",
+    "main.js": "/web_project_around_react/static/js/main.5d36ef09.js",
     "static/media/cousteau.png": "/web_project_around_react/static/media/cousteau.31d380c2f1bc801f49af.png",
     "static/media/logo.svg": "/web_project_around_react/static/media/logo.8d3d91b993b29137c40dcb67a726c88d.svg",
     "static/media/like.svg": "/web_project_around_react/static/media/like.d79cc06f752a981af390c7a1a0452aaf.svg",
@@ -10,10 +10,10 @@
     "static/media/editbutton.svg": "/web_project_around_react/static/media/editbutton.deaa97ec11b6132a3e351c4f1aeedfd4.svg",
     "static/media/buttonadd.svg": "/web_project_around_react/static/media/buttonadd.7af106054a0228d3d2d5eafc98fb33f2.svg",
     "main.c7bb3081.css.map": "/web_project_around_react/static/css/main.c7bb3081.css.map",
-    "main.56d2cf2e.js.map": "/web_project_around_react/static/js/main.56d2cf2e.js.map"
+    "main.5d36ef09.js.map": "/web_project_around_react/static/js/main.5d36ef09.js.map"
   },
   "entrypoints": [
     "static/css/main.c7bb3081.css",
-    "static/js/main.56d2cf2e.js"
+    "static/js/main.5d36ef09.js"
   ]
 }
