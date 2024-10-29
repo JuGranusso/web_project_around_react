@@ -1,10 +1,10 @@
 import exitButtonIcon from "../images/exit.svg";
 
-function PopupWithForm({ title, name, submitLabel, children }) {
+function PopupWithForm({ title, submitLabel, isOpen, onClose, children }) {
   return (
-    <div className={`form ${name}`}>
+    <div className={`form ${isOpen ? "form_visible" : ""}`}>
       <div className="form__card">
-        <button className="form__exit">
+        <button className="form__exit" onClick={onClose}>
           <img src={exitButtonIcon} alt="Botão Sair" />
         </button>
 

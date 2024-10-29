@@ -1,24 +1,26 @@
+import { useState } from "react";
+
 import PopupWithForm from "./PopupWithForm";
 
 import custeauPhoto from "../images/cousteau.png";
 import editButtonIcon from "../images/editbutton.svg";
 import addButtonIcon from "../images/buttonadd.svg";
-import exitButtonIcon from "../images/exit.svg";
 
 function Main() {
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
   const handleEditAvatarClick = () => {
-    const avatarForm = document.querySelector(".avatar-form");
-    avatarForm.classList.add("form_visible");
+    setIsEditAvatarPopupOpen(true);
   };
 
   const handleEditProfileClick = () => {
-    const profileForm = document.querySelector(".profile-form");
-    profileForm.classList.add("form_visible");
+    setIsEditProfilePopupOpen(true);
   };
 
   const handleAddPlaceClick = () => {
-    const cardForm = document.querySelector(".card-form");
-    cardForm.classList.add("form_visible");
+    setIsAddPlacePopupOpen(true);
   };
 
   return (
@@ -54,6 +56,8 @@ function Main() {
       <section className="photo-grid"></section>
 
       <PopupWithForm
+        isOpen={isEditProfilePopupOpen}
+        onClose={() => setIsEditProfilePopupOpen(false)}
         name="profile-form"
         title="Editar Perfil"
         submitLabel="Salvar"
@@ -82,7 +86,13 @@ function Main() {
         />
         <span className="form__error profissao-error"></span>
       </PopupWithForm>
-      <PopupWithForm name="card-form" title="Novo Local" submitLabel="Criar">
+      <PopupWithForm
+        isOpen={isAddPlacePopupOpen}
+        onClose={() => setIsAddPlacePopupOpen(false)}
+        name="card-form"
+        title="Novo Local"
+        submitLabel="Criar"
+      >
         <input
           className="form__input"
           type="text"
@@ -111,6 +121,8 @@ function Main() {
         submitLabel="Sim"
       />
       <PopupWithForm
+        isOpen={isEditAvatarPopupOpen}
+        onClose={() => setIsEditAvatarPopupOpen(false)}
         name="avatar-form"
         title="Alterar foto do perfil"
         submitLabel="Salvar"
