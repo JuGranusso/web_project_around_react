@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import PopupWithForm from "./PopupWithForm";
 
 import custeauPhoto from "../images/cousteau.png";
 import editButtonIcon from "../images/editbutton.svg";
 import addButtonIcon from "../images/buttonadd.svg";
+import { api } from "../utils/api";
+import Card from "./Card";
 
 function Main() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [userName, setUserName] = useState("Jacques Custeau");
+  const [userDescription, setUserDescription] = useState("Explorador");
+  const [userAvatar, setUserAvatar] = useState(custeauPhoto);
+  const [cards, setCards] = useState([]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -23,20 +29,32 @@ function Main() {
     setIsAddPlacePopupOpen(true);
   };
 
+  useEffect(() => {
+    api.getUserInfo().then(({ name, about, avatar }) => {
+      setUserAvatar(avatar);
+      setUserDescription(about);
+      setUserName(name);
+    });
+
+    api.getCards().then((cards) => {
+      setCards(cards.map(({ name, link }) => ({ name, photoUrl: link })));
+    });
+  }, []);
+
   return (
     <main className="content">
       <section className="profile">
         <div className="profile__avatar">
           <img
             className="profile__photo"
-            src={custeauPhoto}
-            alt="Foto de perfil de Jacques Cousteau"
+            src={userAvatar}
+            alt={`Foto de perfil de ${userName}`}
             onClick={handleEditAvatarClick}
           />
         </div>
         <div className="profile__editor">
           <div className="profile__data">
-            <h1 className="profile__name">Jacques Cousteau</h1>
+            <h1 className="profile__name">{userName}</h1>
             <button className="profile__edit" onClick={handleEditProfileClick}>
               <img
                 src={editButtonIcon}
@@ -44,7 +62,7 @@ function Main() {
               />
             </button>
           </div>
-          <p className="profile__subtitle">Explorador</p>
+          <p className="profile__subtitle">{userDescription}</p>
         </div>
         <div className="profile__button-add" onClick={handleAddPlaceClick}>
           <button className="profile__add">
@@ -53,7 +71,11 @@ function Main() {
         </div>
       </section>
 
-      <section className="photo-grid"></section>
+      <section className="photo-grid">
+        {cards.map(({ name, photoUrl }) => (
+          <Card key={name} name={name} photoUrl={photoUrl} />
+        ))}
+      </section>
 
       <PopupWithForm
         isOpen={isEditProfilePopupOpen}
