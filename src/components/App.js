@@ -5,7 +5,7 @@ import ImagePopup from "./ImagePopup";
 
 function App() {
   return (
-    <div>
+    <div className="page">
       <Header />
       <Main />
       <Footer />
