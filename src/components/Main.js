@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import PopupWithForm from "./PopupWithForm";
 
-import custeauPhoto from "../images/cousteau.png";
 import editButtonIcon from "../images/editbutton.svg";
 import addButtonIcon from "../images/buttonadd.svg";
 import { api } from "../utils/api";
 import Card from "./Card";
 import ImagePopup from "./ImagePopup";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main() {
+  const { avatar, about, name } = useContext(CurrentUserContext);
+
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [userName, setUserName] = useState("Jacques Custeau");
-  const [userDescription, setUserDescription] = useState("Explorador");
-  const [userAvatar, setUserAvatar] = useState(custeauPhoto);
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -39,12 +38,6 @@ function Main() {
   };
 
   useEffect(() => {
-    api.getUserInfo().then(({ name, about, avatar }) => {
-      setUserAvatar(avatar);
-      setUserDescription(about);
-      setUserName(name);
-    });
-
     api.getCards().then((cards) => {
       setCards(cards.map(({ name, link }) => ({ name, photoUrl: link })));
     });
@@ -56,14 +49,14 @@ function Main() {
         <div className="profile__avatar">
           <img
             className="profile__photo"
-            src={userAvatar}
-            alt={`Foto de perfil de ${userName}`}
+            src={avatar}
+            alt={`Foto de perfil de ${name}`}
             onClick={handleEditAvatarClick}
           />
         </div>
         <div className="profile__editor">
           <div className="profile__data">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{name}</h1>
             <button className="profile__edit" onClick={handleEditProfileClick}>
               <img
                 src={editButtonIcon}
@@ -71,7 +64,7 @@ function Main() {
               />
             </button>
           </div>
-          <p className="profile__subtitle">{userDescription}</p>
+          <p className="profile__subtitle">{about}</p>
         </div>
         <div className="profile__button-add" onClick={handleAddPlaceClick}>
           <button className="profile__add">
