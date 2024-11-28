@@ -22,6 +22,19 @@ class Api {
     });
   }
 
+  _addLikeDataToCard(card) {
+    const isLiked = card.likes.some(
+      (likeOwner) => likeOwner._id === this.userId
+    );
+    const likeCount = card.likes.length;
+
+    return {
+      ...card,
+      isLiked,
+      likeCount,
+    };
+  }
+
   getCards() {
     return this._fetch("cards").then((cards) => cards.reverse());
   }

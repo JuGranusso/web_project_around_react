@@ -9,6 +9,13 @@ import Card from "./Card";
 import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
+const transformCard = (card, currentUser) => ({
+  ...card,
+  isLiked: card.likes.some((owner) => owner._id === currentUser._id),
+  photoUrl: card.link,
+  link: undefined,
+});
+
 function Main() {
   const { avatar, about, name } = useContext(CurrentUserContext);
 
@@ -17,6 +24,9 @@ function Main() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  console.log("cards", cards);
+
+  const currentUser = useContext(CurrentUserContext);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -37,11 +47,31 @@ function Main() {
     setSelectedCard(null);
   };
 
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((owner) => owner._id === currentUser._id);
+
+    const likePromise = isLiked
+      ? api.unlikeCard(card._id)
+      : api.likeCard(card._id);
+
+    likePromise
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id
+              ? transformCard(newCard, currentUser)
+              : currentCard
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  }
+
   useEffect(() => {
     api.getCards().then((cards) => {
-      setCards(cards.map(({ name, link }) => ({ name, photoUrl: link })));
+      setCards(cards.map((card) => transformCard(card, currentUser)));
     });
-  }, []);
+  }, [currentUser]);
 
   return (
     <main className="content">
@@ -76,10 +106,12 @@ function Main() {
       <section className="photo-grid">
         {cards.map((card) => (
           <Card
-            key={card.name}
+            key={card._id}
             name={card.name}
             photoUrl={card.photoUrl}
             onClick={() => setSelectedCard(card)}
+            onCardLike={() => handleCardLike(card)}
+            isLiked={card.isLiked}
           />
         ))}
       </section>

@@ -1,7 +1,8 @@
 import likeIcon from "../images/like.svg";
+import likedIcon from "../images/liked.svg";
 import thrashIcon from "../images/like.svg";
 
-function Card({ photoUrl, name, onClick }) {
+function Card({ photoUrl, name, onClick, isLiked, onCardLike }) {
   return (
     <div class="photo-grid__card">
       <img
@@ -9,14 +10,20 @@ function Card({ photoUrl, name, onClick }) {
         src={thrashIcon}
         alt="botão para excluir"
       />
-      <img class="photo-grid__photo" src={photoUrl} onClick={onClick} />
+      <img
+        class="photo-grid__photo"
+        src={photoUrl}
+        onClick={onClick}
+        alt={name}
+      />
       <div class="photo-grid__description">
         <p class="photo-grid__name">{name}</p>
         <div class="photo-grid__likes">
           <img
             class="photo-grid__like"
-            src={likeIcon}
+            src={isLiked ? likedIcon : likeIcon}
             alt="botão para curtir"
+            onClick={onCardLike}
           />
           <span class="photo-grid__like-count"></span>
         </div>
