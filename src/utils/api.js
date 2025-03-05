@@ -40,7 +40,6 @@ class Api {
   }
 
   getUserInfo() {
-    console.trace();
     return this._fetch("users/me");
   }
 
@@ -73,6 +72,10 @@ class Api {
     return this._fetch(`cards/likes/${cardId}`, "DELETE").then((card) =>
       this._addLikeDataToCard(card)
     );
+  }
+
+  changeLikeCardStatus(cardId, isLiked) {
+    return isLiked ? this.likeCard(cardId) : this.unlikeCard(cardId);
   }
 }
 

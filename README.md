@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# Around The U.S.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é uma aplicação de rede social interativa onde os usuários podem compartilhar, curtir e gerenciar cartões de fotos de diversos lugares dos EUA. Implementado usando React, o projeto utiliza funcionalidades modernas de React, como Context API, hooks e componentes funcionais.
 
-## Available Scripts
+## Funcionalidades
 
-In the project directory, you can run:
+- Exibição de cartões de lugares com imagens
+- Edição de perfil do usuário (nome, descrição e foto de perfil)
+- Adição de novos cartões
+- Curtir/descurtir cartões
+- Exclusão de cartões criados pelo usuário
+- Visualização de imagens em tamanho ampliado
+- Confirmação de exclusão de cartões
 
-### `npm start`
+## Tecnologias
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React (Componentes funcionais)
+- Context API para gerenciamento de estado global
+- Hooks (useState, useEffect, useContext, useRef)
+- API RESTful para persistência de dados
+- CSS modular para estilização
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Estrutura do Projeto
 
-### `npm test`
+O projeto segue uma arquitetura de componentes organizada:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+src/
+  blocks/         # Estilos CSS por bloco (metodologia BEM)
+  components/     # Componentes React
+    header/       # Componentes de cabeçalho
+    footer/       # Componentes de rodapé
+    main/         # Componentes principais
+      components/ # Subcomponentes utilizados pelo Main
+        card/     # Componente de cartão
+    popup/        # Componentes de pop-up
+      editAvatar/     # Edição de avatar
+      editProfile/    # Edição de perfil
+      imagePopup/     # Visualização de imagem
+      newCard/        # Adição de cartão
+      removeCard/     # Confirmação de remoção
+  contexts/       # Contextos React
+  images/         # Recursos de imagem
+  utils/          # Utilitários (API, constantes, etc.)
+  vendor/         # Código de terceiros
+```
 
-### `npm run build`
+## Como executar
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone o repositório
+2. Instale as dependências: `npm install`
+3. Execute o projeto: `npm start`
+4. Acesse http://localhost:3000 no navegador
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Scripts disponíveis
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `npm start`: Inicia o servidor de desenvolvimento
+- `npm build`: Cria build de produção
+- `npm test`: Executa testes
+- `npm eject`: Ejeta configurações do Create React App
 
-### `npm run eject`
+## API
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+O projeto se conecta a uma API externa para persistência de dados. As operações incluem:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Buscar/atualizar informações do usuário
+- Buscar/criar/excluir cartões
+- Curtir/descurtir cartões
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Autor
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este projeto foi desenvolvido como parte do programa de educação Web da Tripleten (anteriormente Practicum).
