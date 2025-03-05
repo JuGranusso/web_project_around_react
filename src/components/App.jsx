@@ -4,11 +4,6 @@ import Main from "./main/Main.jsx";
 import Footer from "./footer/Footer.jsx";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
-import EditProfile from "./popup/editProfile/EditProfile.jsx";
-import EditAvatar from "./popup/editAvatar/EditAvatar.jsx";
-import ImagePopup from "./popup/imagePopup/ImagePopup.jsx";
-import NewCard from "./popup/newCard/NewCard.jsx";
-import RemoveCard from "./popup/removeCard/RemoveCard.jsx";
 import "./app.css";
 
 function App() {
@@ -18,15 +13,6 @@ function App() {
     avatar: "",
   });
   const [cards, setCards] = useState([]);
-  const [selectedCard, setSelectedCard] = useState(null);
-  const [popup, setPopup] = useState({
-    isEditProfileOpen: false,
-    isAddPlaceOpen: false,
-    isEditAvatarOpen: false,
-    isImagePopupOpen: false,
-    isDeleteConfirmationOpen: false,
-  });
-  const [cardToDelete, setCardToDelete] = useState(null);
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getCards()])
@@ -44,41 +30,12 @@ function App() {
       .catch((error) => console.error(error));
   }, []);
 
-  const handleOpenPopup = (popupName) => {
-    setPopup({
-      ...popup,
-      [popupName]: true,
-    });
-  };
-
-  const handleClosePopup = () => {
-    setPopup({
-      isEditProfileOpen: false,
-      isAddPlaceOpen: false,
-      isEditAvatarOpen: false,
-      isImagePopupOpen: false,
-      isDeleteConfirmationOpen: false,
-    });
-    setSelectedCard(null);
-    setCardToDelete(null);
-  };
-
-  const handleCardClick = (card) => {
-    setSelectedCard(card);
-    handleOpenPopup("isImagePopupOpen");
-  };
-
-  const handleDeleteClick = (cardId) => {
-    setCardToDelete(cardId);
-    handleOpenPopup("isDeleteConfirmationOpen");
-  };
-
   const handleUpdateUser = (data) => {
     return api
       .editUserInfo(data)
       .then((newData) => {
         setCurrentUser(newData);
-        handleClosePopup();
+        return newData;
       })
       .catch((error) => console.error(error));
   };
@@ -88,7 +45,7 @@ function App() {
       .editUserAvatar(data)
       .then((newData) => {
         setCurrentUser((prevUser) => ({ ...prevUser, avatar: newData.avatar }));
-        handleClosePopup();
+        return newData;
       })
       .catch((error) => console.error(error));
   };
@@ -111,21 +68,20 @@ function App() {
   };
 
   const handleCardDelete = (cardId) => {
-    api
+    return api
       .deleteCard(cardId)
       .then(() => {
         setCards((state) => state.filter((card) => card._id !== cardId));
-        handleClosePopup();
       })
       .catch((error) => console.error(error));
   };
 
   const handleAddPlaceSubmit = (cardData) => {
-    api
+    return api
       .createNewCard(cardData)
       .then((newCard) => {
         setCards([{ ...newCard, isLiked: false }, ...cards]);
-        handleClosePopup();
+        return newCard;
       })
       .catch((error) => console.error(error));
   };
@@ -138,47 +94,11 @@ function App() {
         <Header />
         <Main
           cards={cards}
-          onCardClick={handleCardClick}
           onCardLike={handleCardLike}
-          onCardDelete={handleDeleteClick}
-          onOpenPopup={handleOpenPopup}
+          onCardDelete={handleCardDelete}
+          onAddPlaceSubmit={handleAddPlaceSubmit}
         />
         <Footer />
-
-        {popup.isEditProfileOpen && (
-          <EditProfile
-            onClose={handleClosePopup}
-            isOpen={popup.isEditProfileOpen}
-          />
-        )}
-        {popup.isEditAvatarOpen && (
-          <EditAvatar
-            onClose={handleClosePopup}
-            isOpen={popup.isEditAvatarOpen}
-          />
-        )}
-        {popup.isAddPlaceOpen && (
-          <NewCard
-            onClose={handleClosePopup}
-            onAddPlaceSubmit={handleAddPlaceSubmit}
-            isOpen={popup.isAddPlaceOpen}
-          />
-        )}
-        {popup.isImagePopupOpen && (
-          <ImagePopup
-            card={selectedCard}
-            onClose={handleClosePopup}
-            isOpen={popup.isImagePopupOpen}
-          />
-        )}
-        {popup.isDeleteConfirmationOpen && (
-          <RemoveCard
-            isOpen={popup.isDeleteConfirmationOpen}
-            onClose={handleClosePopup}
-            onCardRemove={handleCardDelete}
-            cardId={cardToDelete || ""}
-          />
-        )}
       </div>
     </CurrentUserContext.Provider>
   );
